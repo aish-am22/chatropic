@@ -2,7 +2,12 @@ import express from "express";
 import { ENV } from "./config/env.js";
 import { connectDB } from "./config/db.js";
 import { clerkMiddleware } from "@clerk/express";
-import { functions, inngest, serve } from "./config/inngest.js"; // import serve from there
+import { functions, inngest } from './config/inngest.js';
+import { serve } from "inngest/express";
+
+// ✅ correct usage
+app.use("/api/inngest", serve({ client: inngest, functions }));
+
 
 const app = express();
 
