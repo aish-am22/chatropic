@@ -1,38 +1,35 @@
-import express from 'express';
-import { ENV } from './config/env.js';
-import { connectDB } from './config/db.js';
-import { clerkMiddleware } from '@clerk/express';
-import { functions, inngest } from './config/inngest.js';
-import inngest from "inngest";
-const { serve } = inngest;
-
+import express from "express";
+import { ENV } from "./config/env.js";
+import { connectDB } from "./config/db.js";
+import { clerkMiddleware } from "@clerk/express";
+import { functions, inngest, serve } from "./config/inngest.js"; // import serve from there
 
 const app = express();
 
 app.use(express.json());
 app.use(clerkMiddleware());
 
-// fixed: added slash
+// Inngest route
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+  res.send("Hello World!");
 });
 
 const startServer = async () => {
-    try {
-        await connectDB();
+  try {
+    await connectDB();
 
-        // don’t run express.listen in Vercel
-        if (ENV.NODE_ENV !== "production") {
-            app.listen(ENV.PORT, () => {
-                console.log(`Server running on port ${ENV.PORT}`);
-            });
-        }
-    } catch (error) {
-        console.error("Error starting the server", error);
-        process.exit(1);
+    // don’t run express.listen in Vercel
+    if (ENV.NODE_ENV !== "production") {
+      app.listen(ENV.PORT, () => {
+        console.log(`Server running on port ${ENV.PORT}`);
+      });
     }
+  } catch (error) {
+    console.error("Error starting the server", error);
+    process.exit(1);
+  }
 };
 
 startServer();
