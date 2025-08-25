@@ -2,25 +2,24 @@ import express from "express";
 import { ENV } from "./config/env.js";
 import { connectDB } from "./config/db.js";
 import { clerkMiddleware } from "@clerk/express";
-import { functions, inngest } from './config/inngest.js';
+import { functions, inngest } from "./config/inngest.js";
 import { serve } from "inngest/express";
 
-// ✅ correct usage
-app.use("/api/inngest", serve({ client: inngest, functions }));
+const app = express(); // 👈 pehle declare
 
-
-const app = express();
-
+// Middlewares
 app.use(express.json());
 app.use(clerkMiddleware());
 
 // Inngest route
 app.use("/api/inngest", serve({ client: inngest, functions }));
 
+// Test route
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+// Start server
 const startServer = async () => {
   try {
     await connectDB();
