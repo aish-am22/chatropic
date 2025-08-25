@@ -1,7 +1,7 @@
 import {StreamChat} from "stream-chat";
 import {ENV} from "./env.js";
 
-const sreamClient = StreamChat.getInstance(ENV.STREAM_API_KEY, ENV.STREAM_API_SECRET);
+const streamClient = StreamChat.getInstance(ENV.STREAM_API_KEY, ENV.STREAM_API_SECRET);
 
 
 export const upsertStreamUser = async (userData) => {
@@ -31,7 +31,7 @@ export const deleteStreamUser = async (userId) => {
 export const generateScreenToken = (userId) => {
     try {
        const userIdString = userId.toString()
-       return sreamClient.createToken(userIdString)
+       return streamClient.createToken(userIdString)
     } catch (error) {
         console.log("Error generating stream token", error)
         return null
